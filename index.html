@@ -83,6 +83,7 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(45, 212, 191, 0.3);
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .glass-button:hover {
@@ -94,13 +95,6 @@
         /* Text Gradients */
         .text-gradient {
             background: linear-gradient(to right, #2dd4bf, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .text-gradient-alt {
-            background: linear-gradient(to right, #f8fafc, #94a3b8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -120,6 +114,14 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #334155;
         }
+
+        /* Modal Transitions */
+        .modal-overlay {
+            transition: opacity 0.3s ease-out;
+        }
+        .modal-content {
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease-out;
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-brand-500 selection:text-white relative">
@@ -132,11 +134,11 @@
     </div>
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
+    <nav class="fixed w-full z-40 top-0 transition-all duration-300" id="navbar">
         <div class="absolute inset-0 glass border-b-0 border-x-0"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="flex justify-between items-center h-20">
-                <div class="flex items-center gap-2 cursor-pointer">
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
                     <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-400 to-blue-500 flex items-center justify-center text-white font-display font-bold text-xl shadow-[0_0_15px_rgba(45,212,191,0.5)]">
                         q
                     </div>
@@ -150,8 +152,8 @@
                 </div>
 
                 <div class="flex items-center gap-4">
-                    <button class="hidden md:block text-sm font-medium text-slate-300 hover:text-white transition-colors">Log In</button>
-                    <button class="glass-button px-5 py-2.5 rounded-full text-sm font-semibold text-brand-50 flex items-center gap-2">
+                    <button onclick="showModal('Authentication System', 'In the deployed platform, this will open our unified login gateway. Users can authenticate seamlessly using traditional email (which provisions a secure smart wallet under the hood) or connect via an existing Web3 wallet provider.', 'user-circle')" class="hidden md:block text-sm font-medium text-slate-300 hover:text-white transition-colors">Log In</button>
+                    <button onclick="showModal('Web3 Wallet Integration', 'This action will trigger your browser extension (like MetaMask, Phantom) or WalletConnect interface. It securely links your digital identity and funds to the qreit platform to enable token purchases and yield distribution.', 'wallet')" class="glass-button px-5 py-2.5 rounded-full text-sm font-semibold text-brand-50 flex items-center gap-2">
                         <span>Connect Wallet</span>
                         <i data-lucide="wallet" class="w-4 h-4"></i>
                     </button>
@@ -183,10 +185,10 @@
                     </p>
                     
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <button class="bg-brand-500 hover:bg-brand-400 text-slate-950 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 shadow-[0_0_20px_rgba(45,212,191,0.4)] hover:shadow-[0_0_30px_rgba(45,212,191,0.6)] flex items-center justify-center gap-2">
+                        <button onclick="showModal('Marketplace Explorer', 'This will redirect you to the primary dApp interface. There, you can utilize advanced filters (by yield, property type, location, and risk profile) to explore all available tokenized real estate assets.', 'layout-grid')" class="bg-brand-500 hover:bg-brand-400 text-slate-950 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 shadow-[0_0_20px_rgba(45,212,191,0.4)] hover:shadow-[0_0_30px_rgba(45,212,191,0.6)] flex items-center justify-center gap-2">
                             Explore Properties <i data-lucide="arrow-right" class="w-5 h-5"></i>
                         </button>
-                        <button class="glass-button px-8 py-4 rounded-full font-semibold text-lg text-white flex items-center justify-center gap-2">
+                        <button onclick="showModal('Platform Whitepaper', 'This button will open our comprehensive GitBook documentation. It contains deep dives into our legal structure (SEC Reg D/S compliance), tokenomics, smart contract architecture, and future roadmap.', 'file-text')" class="glass-button px-8 py-4 rounded-full font-semibold text-lg text-white flex items-center justify-center gap-2">
                             Read Whitepaper
                         </button>
                     </div>
@@ -253,7 +255,7 @@
                             </div>
                         </div>
 
-                        <button class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white py-3 rounded-xl font-medium transition-all duration-300 flex justify-center items-center gap-2">
+                        <button onclick="showModal('Investment Checkout', 'This initiates the smart contract interaction. A modal will appear allowing you to input your desired investment amount (e.g., 100 USDC). You will review the transaction, sign it with your wallet, and the QVT tokens will be minted to your address instantly.', 'arrow-right-left')" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white py-3 rounded-xl font-medium transition-all duration-300 flex justify-center items-center gap-2">
                             Buy QVT Tokens
                         </button>
                     </div>
@@ -277,8 +279,7 @@
     <section class="py-10 border-y border-white/5 bg-white/[0.02]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p class="text-sm text-slate-500 mb-6 font-medium uppercase tracking-widest">Audited & Backed By Industry Leaders</p>
-            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-                <!-- Placeholder text logos for aesthetic -->
+            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500 cursor-default">
                 <div class="font-display font-bold text-xl text-white flex items-center gap-2"><i data-lucide="hexagon" class="w-6 h-6"></i> Polygon</div>
                 <div class="font-display font-bold text-xl text-white flex items-center gap-2"><i data-lucide="shield" class="w-6 h-6"></i> CertiK</div>
                 <div class="font-display font-bold text-xl text-white flex items-center gap-2"><i data-lucide="building" class="w-6 h-6"></i> CBRE</div>
@@ -445,7 +446,7 @@
                     <h2 class="text-3xl md:text-5xl font-display font-bold mb-4">Live <span class="text-gradient">Offerings.</span></h2>
                     <p class="text-slate-400">Prime commercial real estate across top global markets, strictly vetted by industry professionals.</p>
                 </div>
-                <button class="mt-6 md:mt-0 text-brand-400 font-medium hover:text-brand-300 flex items-center gap-2 group">
+                <button onclick="showModal('Full Asset Marketplace', 'This button navigates to the marketplace where you can browse a complete list of live offerings, past funded properties, and view exhaustive data rooms (legal documents, appraisals, financial history) for every single building.', 'search')" class="mt-6 md:mt-0 text-brand-400 font-medium hover:text-brand-300 flex items-center gap-2 group focus:outline-none">
                     View Marketplace <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                 </button>
             </div>
@@ -476,7 +477,7 @@
                         </div>
                         <div class="text-xs text-slate-400 text-right mb-4">100% Funded (Trading Live)</div>
                         
-                        <button class="w-full glass-button text-white py-2 rounded-lg text-sm font-semibold hover:bg-white/10 transition-colors">
+                        <button onclick="showModal('Secondary Market Trading', 'Because this asset is fully funded, this button will open our integrated Decentralized Exchange (DEX). Here, token holders can place limit or market orders to sell their QSP tokens, while new investors can purchase them directly from the open market, ensuring 24/7 liquidity.', 'bar-chart-2')" class="w-full glass-button text-white py-2 rounded-lg text-sm font-semibold hover:bg-white/10 transition-colors">
                             Trade Tokens
                         </button>
                     </div>
@@ -508,7 +509,7 @@
                         </div>
                         <div class="text-xs text-slate-400 text-right mb-4">65% Funded (3 Days Left)</div>
                         
-                        <button class="w-full bg-brand-500 hover:bg-brand-400 text-slate-900 py-2 rounded-lg text-sm font-bold transition-colors shadow-[0_0_15px_rgba(45,212,191,0.3)]">
+                        <button onclick="showModal('Primary Market Investment', 'Since this asset is currently in its funding phase, clicking this will open the direct purchase portal. You can securely commit USDC from your wallet. Funds are held in an audited escrow smart contract until the 100% funding goal is met.', 'credit-card')" class="w-full bg-brand-500 hover:bg-brand-400 text-slate-900 py-2 rounded-lg text-sm font-bold transition-colors shadow-[0_0_15px_rgba(45,212,191,0.3)]">
                             Invest Now
                         </button>
                     </div>
@@ -540,7 +541,7 @@
                         </div>
                         <div class="text-xs text-slate-400 text-right mb-4">Opens in 12 Days</div>
                         
-                        <button class="w-full glass-button text-white py-2 rounded-lg text-sm font-semibold hover:bg-white/10 transition-colors border-dashed">
+                        <button onclick="showModal('Allowlist Registration', 'This feature allows early access. When deployed, clicking here will prompt you to complete your KYC checks and lock in a minimum deposit (e.g., $100 USDC). This guarantees your allocation and mints your tokens automatically the second the primary sale goes live.', 'clipboard-check')" class="w-full glass-button text-white py-2 rounded-lg text-sm font-semibold hover:bg-white/10 transition-colors border-dashed">
                             Join Allowlist
                         </button>
                     </div>
@@ -560,10 +561,10 @@
                 <p class="text-slate-400 mb-10 max-w-2xl mx-auto relative z-10">Join thousands of modern investors diversifying their portfolios with high-yield, tokenized commercial real estate.</p>
                 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-                    <button class="bg-brand-500 hover:bg-brand-400 text-slate-950 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-[0_0_20px_rgba(45,212,191,0.4)]">
+                    <button onclick="showModal('KYC / Onboarding Flow', 'In production, this initiates the compliant onboarding process. You will be asked to verify your identity (SumSub / Onfido integration), which ensures our platform remains strictly compliant with SEC Reg D and Reg S requirements before you can interact with securities.', 'user-plus')" class="bg-brand-500 hover:bg-brand-400 text-slate-950 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-[0_0_20px_rgba(45,212,191,0.4)]">
                         Create Account
                     </button>
-                    <button class="glass border border-white/20 hover:bg-white/5 text-white px-8 py-4 rounded-full font-bold text-lg transition-all duration-300">
+                    <button onclick="showModal('Interactive Dashboard', 'This will route you directly to the investor dashboard without creating an account (Read-Only Mode). You will be able to see real-time yields, historical payout charts, and browse property data rooms to perform due diligence before deciding to sign up.', 'pie-chart')" class="glass border border-white/20 hover:bg-white/5 text-white px-8 py-4 rounded-full font-bold text-lg transition-all duration-300">
                         Explore Platform
                     </button>
                 </div>
@@ -584,38 +585,36 @@
                     </div>
                     <p class="text-sm text-slate-500 mb-6">Tokenizing the world's commercial skyline for the modern investor.</p>
                     <div class="flex gap-4 text-slate-400">
-                        <a href="#" class="hover:text-brand-400 transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
-                        <a href="#" class="hover:text-brand-400 transition-colors"><i data-lucide="github" class="w-5 h-5"></i></a>
-                        <a href="#" class="hover:text-brand-400 transition-colors"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                        <a href="javascript:void(0)" onclick="showModal('Social Media', 'Links out to the official qreit Twitter/X account.', 'twitter')" class="hover:text-brand-400 transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                        <a href="javascript:void(0)" onclick="showModal('Open Source Contracts', 'Links out to our GitHub repository where users can review our open-source, fully audited smart contracts.', 'github')" class="hover:text-brand-400 transition-colors"><i data-lucide="github" class="w-5 h-5"></i></a>
+                        <a href="javascript:void(0)" onclick="showModal('Professional Network', 'Links out to our LinkedIn page detailing our corporate team and real estate partners.', 'linkedin')" class="hover:text-brand-400 transition-colors"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
                     </div>
                 </div>
                 
                 <div>
                     <h4 class="text-white font-bold mb-4">Platform</h4>
                     <ul class="space-y-2 text-sm text-slate-500">
-                        <li><a href="#" class="hover:text-brand-400 transition-colors">Marketplace</a></li>
-                        <li><a href="#" class="hover:text-brand-400 transition-colors">Secondary DEX</a></li>
-                        <li><a href="#" class="hover:text-brand-400 transition-colors">Yield Calculator</a></li>
-                        <li><a href="#" class="hover:text-brand-400 transition-colors">Institutional</a></li>
+                        <li><a href="javascript:void(0)" onclick="showModal('Marketplace', 'View all primary market offerings.', 'building')" class="hover:text-brand-400 transition-colors">Marketplace</a></li>
+                        <li><a href="javascript:void(0)" onclick="showModal('Secondary DEX', 'Trade property tokens peer-to-peer.', 'arrow-right-left')" class="hover:text-brand-400 transition-colors">Secondary DEX</a></li>
+                        <li><a href="javascript:void(0)" onclick="showModal('Yield Calculator', 'Interactive tool to project compounding yields over time.', 'calculator')" class="hover:text-brand-400 transition-colors">Yield Calculator</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 class="text-white font-bold mb-4">Resources</h4>
                     <ul class="space-y-2 text-sm text-slate-500">
-                        <li><a href="#" class="hover:text-brand-400 transition-colors">Whitepaper</a></li>
-                        <li><a href="#" class="hover:text-brand-400 transition-colors">Docs</a></li>
-                        <li><a href="#" class="hover:text-brand-400 transition-colors">Audit Reports</a></li>
-                        <li><a href="#" class="hover:text-brand-400 transition-colors">Help Center</a></li>
+                        <li><a href="javascript:void(0)" onclick="showModal('Whitepaper', 'Technical and business documentation.', 'file-text')" class="hover:text-brand-400 transition-colors">Whitepaper</a></li>
+                        <li><a href="javascript:void(0)" onclick="showModal('Audit Reports', 'Links to our CertiK and Hacken smart contract security audits.', 'shield-check')" class="hover:text-brand-400 transition-colors">Audit Reports</a></li>
+                        <li><a href="javascript:void(0)" onclick="showModal('Help Center', 'Knowledge base and support ticket system.', 'help-circle')" class="hover:text-brand-400 transition-colors">Help Center</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 class="text-white font-bold mb-4">Legal</h4>
                     <ul class="space-y-2 text-sm text-slate-500">
-                        <li><a href="#" class="hover:text-brand-400 transition-colors">Terms of Service</a></li>
-                        <li><a href="#" class="hover:text-brand-400 transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-brand-400 transition-colors">Risk Disclaimer</a></li>
+                        <li><a href="javascript:void(0)" onclick="showModal('Terms of Service', 'Platform usage terms and conditions.', 'scale')" class="hover:text-brand-400 transition-colors">Terms of Service</a></li>
+                        <li><a href="javascript:void(0)" onclick="showModal('Privacy Policy', 'Details on how we handle user data and KYC information.', 'lock')" class="hover:text-brand-400 transition-colors">Privacy Policy</a></li>
+                        <li><a href="javascript:void(0)" onclick="showModal('Risk Disclaimer', 'Mandatory SEC risk disclosures regarding illiquidity and potential loss of capital.', 'alert-triangle')" class="hover:text-brand-400 transition-colors">Risk Disclaimer</a></li>
                     </ul>
                 </div>
             </div>
@@ -627,17 +626,108 @@
         </div>
     </footer>
 
-    <!-- Initialize Lucide Icons -->
+    <!-- Interactive Feature Modal (Hidden by default) -->
+    <div id="feature-modal" class="fixed inset-0 z-[100] bg-slate-950/60 backdrop-blur-md hidden flex items-center justify-center opacity-0 modal-overlay">
+        <!-- Modal Card -->
+        <div id="feature-modal-box" class="glass-card max-w-md w-full mx-4 rounded-3xl p-8 relative transform scale-95 modal-content">
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 p-2 rounded-full">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            
+            <!-- Dynamic Content -->
+            <div class="flex flex-col items-center text-center">
+                <div id="modal-icon-container" class="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-500/20 to-blue-500/20 flex items-center justify-center border border-white/10 mb-6 shadow-[0_0_20px_rgba(45,212,191,0.2)]">
+                    <!-- Icon injected via JS -->
+                </div>
+                
+                <h3 id="modal-title" class="text-2xl font-display font-bold text-white mb-3">Feature Title</h3>
+                
+                <div class="w-12 h-1 bg-brand-500/50 rounded-full mb-4"></div>
+                
+                <p id="modal-desc" class="text-slate-300 text-sm leading-relaxed mb-8">
+                    Feature description goes here.
+                </p>
+                
+                <button onclick="closeModal()" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white py-3 rounded-xl font-medium transition-all duration-300">
+                    Got it, close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Initialization Scripts -->
     <script>
+        // Initialize Icons
         lucide.createIcons();
 
-        // Optional: Add a simple scroll effect to navbar to increase blur
+        // Navbar blur effect on scroll
         window.addEventListener('scroll', () => {
             const navbar = document.getElementById('navbar');
             if (window.scrollY > 20) {
                 navbar.classList.add('bg-[#020617]/50');
             } else {
                 navbar.classList.remove('bg-[#020617]/50');
+            }
+        });
+
+        // Modal Logic
+        const modalOverlay = document.getElementById('feature-modal');
+        const modalBox = document.getElementById('feature-modal-box');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-desc');
+        const modalIconContainer = document.getElementById('modal-icon-container');
+
+        function showModal(title, description, iconName) {
+            // Populate content
+            modalTitle.textContent = title;
+            modalDesc.textContent = description;
+            
+            // Re-render the specific icon
+            modalIconContainer.innerHTML = `<i data-lucide="${iconName}" class="w-8 h-8 text-brand-400"></i>`;
+            lucide.createIcons();
+
+            // Display modal with animation
+            modalOverlay.classList.remove('hidden');
+            
+            // Trigger reflow to ensure CSS transition works
+            void modalOverlay.offsetWidth;
+            
+            // Fade in and scale up
+            modalOverlay.classList.remove('opacity-0');
+            modalBox.classList.remove('scale-95');
+            modalBox.classList.add('scale-100');
+            
+            // Prevent background scrolling
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            // Fade out and scale down
+            modalOverlay.classList.add('opacity-0');
+            modalBox.classList.remove('scale-100');
+            modalBox.classList.add('scale-95');
+            
+            // Restore background scrolling
+            document.body.style.overflow = 'auto';
+            
+            // Hide element after transition completes
+            setTimeout(() => {
+                modalOverlay.classList.add('hidden');
+            }, 300);
+        }
+
+        // Close modal when clicking the backdrop
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+
+        // Close modal on Escape key press
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modalOverlay.classList.contains('hidden')) {
+                closeModal();
             }
         });
     </script>
